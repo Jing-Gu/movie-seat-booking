@@ -17,14 +17,24 @@ const isClicked = (e) => {
 
 const movieIsChanged = (e) => {
   ticketPrice = +e.target.value;
+  setMovieData(e.target.selectedIndex, e.target.value);
   updateSelectedCount();
 };
 
 const updateSelectedCount = () => {
   const selectedSeats = document.querySelectorAll(".row .selected");
+  const selectedSeatsArr = [...selectedSeats];
+  const seatsIndex = selectedSeatsArr.map((seat) => [...seats].indexOf(seat));
+  localStorage.setItem("selectedSeats", JSON.stringify(seatsIndex));
+
   const selectedSeatsCount = selectedSeats.length;
   count.innerText = selectedSeatsCount;
   total.innerText = selectedSeatsCount * ticketPrice;
+};
+
+const setMovieData = (movieIndex, moviePrice) => {
+  localStorage.setItem("selectedMovieIndex", movieIndex);
+  localStorage.setItem("selectedMoviePrice", moviePrice);
 };
 
 //better than seats.forEach with click listener, the click event only happens in the container
