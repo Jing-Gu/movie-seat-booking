@@ -5,6 +5,8 @@ const total = document.getElementById("total");
 const movieSelect = document.getElementById("movie");
 let ticketPrice = +movieSelect.value;
 
+populateUI();
+
 const isClicked = (e) => {
   if (
     e.target.classList.contains("seat") &&
@@ -37,7 +39,26 @@ const setMovieData = (movieIndex, moviePrice) => {
   localStorage.setItem("selectedMoviePrice", moviePrice);
 };
 
+//update UI upon refreshing according to local storage
+function populateUI() {
+  const selectedSeats = JSON.parse(localStorage.getItem("selectedSeats"));
+  if (selectedSeats !== null && selectedSeats.length > 0) {
+    seats.forEach((seat, index) => {
+      if (selectedSeats.indexOf(index) > -1) {
+        seat.classList.add("selected");
+      }
+    });
+  }
+  const selectedMovieIndex = localStorage.getItem("selectedMovieIndex");
+  if (selectedMovieIndex !== null) {
+    movieSelect.selectedIndex = selectedMovieIndex;
+  }
+}
+
 //better than seats.forEach with click listener, the click event only happens in the container
 container.addEventListener("click", isClicked);
 
 movieSelect.addEventListener("change", movieIsChanged);
+
+//set the initial count and total
+updateSelectedCount();
